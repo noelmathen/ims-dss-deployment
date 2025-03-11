@@ -1,27 +1,20 @@
-# Use Python 3.9 as the base image
+# Use the official Python image from DockerHub
 FROM python:3.9-slim
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy requirements.txt
-COPY requirements.txt .
-
-# Install dependencies with specific versions to avoid compatibility issues
-RUN pip install --no-cache-dir numpy==1.23.5
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the application code
+# Copy all the project files into the container
 COPY . .
 
-# Create a directory for data persistence
-RUN mkdir -p /app/data
+# Install dependencies
+RUN pip install -r requirements.txt
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1
-
-# Expose port
+# Expose the port the app runs on
 EXPOSE 5000
 
-# Command to run the application
+# Define environment variable
+ENV FLASK_APP=app.py
+
+# Run the application
 CMD ["python", "app.py"]
